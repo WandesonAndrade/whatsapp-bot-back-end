@@ -1,2 +1,3 @@
-2025/03/05-15:35:24.645 4550 Creating DB C:\Users\W E T\Documents\wandeson\JS\whatsapp-bot\tokens\api-whatsapp\Default\Local Storage\leveldb since it was missing.
-2025/03/05-15:35:24.736 4550 Reusing MANIFEST C:\Users\W E T\Documents\wandeson\JS\whatsapp-bot\tokens\api-whatsapp\Default\Local Storage\leveldb/MANIFEST-000001
+2025/03/06-13:57:43.530 30f8 Reusing MANIFEST C:\Users\W E T\Documents\wandeson\JS\whatsapp-bot\tokens\api-whatsapp\Default\Local Storage\leveldb/MANIFEST-000001
+2025/03/06-13:57:43.545 30f8 Recovering log #3
+2025/03/06-13:57:43.567 30f8 Reusing old log C:\Users\W E T\Documents\wandeson\JS\whatsapp-bot\tokens\api-whatsapp\Default\Local Storage\leveldb/000003.log 

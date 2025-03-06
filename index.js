@@ -15,6 +15,14 @@ app.use(
 
 // Função para iniciar a API do WhatsApp
 const start = (client) => {
+  // Endpoint para exibir o QR code
+  app.get("/qr", (req, res) => {
+    client.onQRCode((qr) => {
+      res.json({ qr }); // Envia o QR code para o front-end
+    });
+  });
+
+  // Endpoint para enviar mensagem
   app.post("/send-message", async (req, res) => {
     try {
       const { number, message } = req.body;
