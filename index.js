@@ -1,25 +1,46 @@
 const express = require("express");
 const venom = require("venom-bot");
-const cors = require("cors"); // Importando o CORS
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors()); // Permitindo CORS para todas as origens, ou você pode restringir para uma origem específica
-const port = 3000;
 
+// Habilita CORS apenas para o frontend
 app.use(
   cors({
-    origin: "http://localhost:5173", // Permite apenas esse domínio
+    origin: "http://localhost:5173",
   })
 );
 
+const port = 3000;
+let qrCodeBase64 = null; // Variável global para armazenar o QR Code
+
+// Endpoint para obter o QR Code
+// Rota para gerar e retornar o QR code em base64
+app.get("/qr", (req, res) => {
+  venom
+    .create("sessionName", (base64Qr, asciiQR, attempts, urlCode) => {
+      // Retorna o QR code em base64 para o front-end
+      res.json({ qr: base64Qr });
+    })
+    .catch((erro) => {
+      console.log(erro);
+      res.status(500).json({ error: "Erro ao gerar QR code" });
+    });
+});
+
 // Função para iniciar a API do WhatsApp
 const start = (client) => {
-  // Endpoint para exibir o QR code
-  app.get("/qr", (req, res) => {
-    client.onQRCode((qr) => {
-      res.json({ qr }); // Envia o QR code para o front-end
-    });
+  client.onStateChange((state) => {
+    console.log("Estado do cliente:", state);
+    if (state === "CONNECTED") {
+      qrCodeBase64 = null; // Remove o QR Code após conexão
+    }
+  });
+
+  client.onQRCode((qr) => {
+    console.log("QR Code atualizado!");
+    qrCodeBase64 = qr; // Armazena o QR Code em base64
   });
 
   // Endpoint para enviar mensagem
@@ -27,7 +48,6 @@ const start = (client) => {
     try {
       const { number, message } = req.body;
 
-      // Verifica se os campos necessários foram enviados
       if (!number || !message) {
         return res
           .status(400)
@@ -43,7 +63,7 @@ const start = (client) => {
     }
   });
 
-  // Só inicia o servidor depois que o Venom está pronto
+  // Inicia o servidor na porta definida
   app.listen(port, () => {
     console.log(`🚀 Servidor rodando na porta ${port}`);
   });
@@ -53,7 +73,7 @@ const start = (client) => {
 venom
   .create({
     session: "api-whatsapp",
-    headless: "new", // Usa o novo modo headless compatível com Chrome 133+
+    headless: "new",
     browserArgs: [
       "--no-sandbox",
       "--disable-setuid-sandbox",
