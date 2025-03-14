@@ -13,13 +13,16 @@ async function initializeVenom() {
     .create(
       "api-whatsapp",
       (base64Qr) => {
-        console.log("QR Code atualizado!");
+        console.log("🔹 QR Code atualizado! Escaneie para conectar.");
         qrCodeBase64 = base64Qr;
       },
-      undefined,
+      (status) => {
+        console.log("📢 Status do Venom:", status);
+      },
       {
         logQR: false,
         headless: "new",
+        waitForLoginTimeout: 60000, // Aguarda 60 segundos antes de desistir
         browserArgs: [
           "--no-sandbox",
           "--disable-setuid-sandbox",
@@ -30,7 +33,7 @@ async function initializeVenom() {
       }
     )
     .then((bot) => {
-      console.log("📲 Bot conectado ao WhatsApp!");
+      console.log("✅ Bot conectado ao WhatsApp!");
       client = bot;
       qrCodeBase64 = null; // Remove o QR Code após conexão bem-sucedida
     })
@@ -43,10 +46,16 @@ async function initializeVenom() {
 // Reinicia o Venom-Bot
 async function restartVenom() {
   console.log("🔄 Reiniciando Venom-Bot...");
-  if (client) {
-    await client.logout();
-    client = null;
+
+  try {
+    if (client) {
+      await client.logout();
+      client = null;
+    }
+  } catch (error) {
+    console.error("❌ Erro ao deslogar do Venom-Bot:", error);
   }
+
   venomStarted = false;
   initializeVenom();
 }
@@ -56,9 +65,9 @@ function getQRCode() {
   return qrCodeBase64;
 }
 
-// Verifica se o Venom está conectado
+// Verifica se o Venom está conectado corretamente
 function isConnected() {
-  return client !== null;
+  return client !== null && client.isConnected !== undefined;
 }
 
 // Obtém o cliente Venom
