@@ -7,5 +7,6 @@ router.get("/qr", messageController.getQRCode);
 router.post("/send-message", messageController.sendMessage);
 router.get("/disconnect", messageController.disconnectWhatsApp);
 router.get("/restart", messageController.restartBot);
+router.get("/bot-status", messageController.getBotStatus);
 
 module.exports = router;

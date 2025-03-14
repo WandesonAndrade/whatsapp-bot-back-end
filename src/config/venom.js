@@ -4,6 +4,13 @@ let client = null;
 let qrCodeBase64 = null;
 let venomStarted = false;
 
+// Função para atualizar o status
+function setStatus(status) {
+  currentStatus = status;
+}
+
+const getStatus = () => currentStatus;
+
 // Inicializa o Venom-Bot
 async function initializeVenom() {
   if (venomStarted) return;
@@ -18,6 +25,7 @@ async function initializeVenom() {
       },
       (status) => {
         console.log("📢 Status do Venom:", status);
+        setStatus(status); // Atualiza o status conforme o Venom retorna
       },
       {
         logQR: false,
@@ -36,10 +44,12 @@ async function initializeVenom() {
       console.log("✅ Bot conectado ao WhatsApp!");
       client = bot;
       qrCodeBase64 = null; // Remove o QR Code após conexão bem-sucedida
+      setStatus("Conectado ao WhatsApp!");
     })
     .catch((error) => {
       console.error("❌ Erro ao iniciar Venom-Bot:", error);
       venomStarted = false;
+      setStatus("Erro ao conectar...");
     });
 }
 
@@ -48,16 +58,18 @@ async function restartVenom() {
   console.log("🔄 Reiniciando Venom-Bot...");
 
   try {
-    if (client) {
-      await client.logout();
-      client = null;
+    // Verifica se o cliente existe e está conectado antes de tentar desconectar
+    if (client && client.logout) {
+      await client.logout(); // Desconecta
+      console.log("🔴 WhatsApp desconectado com sucesso!");
     }
-  } catch (error) {
-    console.error("❌ Erro ao deslogar do Venom-Bot:", error);
-  }
 
-  venomStarted = false;
-  initializeVenom();
+    // Após desconectar, reinicia o Venom-Bot
+    await initializeVenom();
+    console.log("✅ Venom-Bot reiniciado com sucesso!");
+  } catch (error) {
+    console.error("❌ Erro ao reiniciar o Venom-Bot:", error);
+  }
 }
 
 // Obtém o QR Code
@@ -81,4 +93,5 @@ module.exports = {
   getQRCode,
   isConnected,
   getClient,
+  getStatus,
 };

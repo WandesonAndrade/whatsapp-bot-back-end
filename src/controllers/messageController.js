@@ -3,6 +3,7 @@ const {
   getQRCode,
   isConnected,
   restartVenom,
+  getStatus,
 } = require("../config/venom");
 
 // Obtém o status do Venom-Bot
@@ -52,9 +53,14 @@ exports.disconnectWhatsApp = async (req, res) => {
       return res.status(500).json({ error: "Venom-Bot não está conectado" });
     }
 
-    await client.logout();
+    console.log("Tentando desconectar o WhatsApp...");
+
+    await client.logout(); // Desconecta
+    console.log("WhatsApp desconectado com sucesso!");
+
     res.json({ success: true, message: "WhatsApp desconectado com sucesso!" });
   } catch (error) {
+    console.error("Erro ao desconectar:", error);
     res
       .status(500)
       .json({ error: "Erro ao desconectar", details: error.message });
@@ -63,6 +69,12 @@ exports.disconnectWhatsApp = async (req, res) => {
 
 // Reinicia o Venom-Bot sem reiniciar o servidor
 exports.restartBot = async (req, res) => {
+  console.log("Reiniciando o Venom-Bot...");
   restartVenom();
   res.json({ success: true, message: "Venom-Bot reiniciando..." });
+};
+
+// Rota para enviar o status atual para o front-end
+exports.getBotStatus = (req, res) => {
+  res.json({ status: getStatus() });
 };
