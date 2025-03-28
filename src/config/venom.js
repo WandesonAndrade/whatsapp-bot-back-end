@@ -18,6 +18,10 @@ async function initializeVenom() {
 
   venom
     .create(
+      {
+        browserArgs: ["--no-sandbox", "--disable-setuid-sandbox"], // Evita problemas de permissão no Render
+        executablePath: "/usr/bin/chromium-browser", // Caminho do Chromium no Render
+      },
       "api-whatsapp",
       (base64Qr) => {
         console.log("🔹 QR Code atualizado! Escaneie para conectar.");
