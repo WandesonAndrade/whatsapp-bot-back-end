@@ -4,6 +4,7 @@ let client = null;
 let qrCodeBase64 = null;
 let venomStarted = false;
 
+const CHROMIUM_PATH = "/usr/bin/chromium-browser";
 // Função para atualizar o status
 function setStatus(status) {
   currentStatus = status;
@@ -18,10 +19,6 @@ async function initializeVenom() {
 
   venom
     .create(
-      {
-        executablePath: "/usr/bin/chromium-browser",
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-      },
       "api-whatsapp",
       (base64Qr) => {
         console.log("🔹 QR Code atualizado! Escaneie para conectar.");
@@ -32,6 +29,7 @@ async function initializeVenom() {
         setStatus(status); // Atualiza o status conforme o Venom retorna
       },
       {
+        executablePath: CHROMIUM_PATH,
         logQR: false,
         headless: "new",
         waitForLoginTimeout: 60000, // Aguarda 60 segundos antes de desistir
