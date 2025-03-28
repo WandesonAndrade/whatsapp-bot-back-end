@@ -19,8 +19,8 @@ async function initializeVenom() {
   venom
     .create(
       {
-        browserArgs: ["--no-sandbox", "--disable-setuid-sandbox"], // Evita problemas de permissão no Render
-        executablePath: "/usr/bin/chromium-browser", // Caminho do Chromium no Render
+        executablePath: "/usr/bin/chromium-browser",
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
       },
       "api-whatsapp",
       (base64Qr) => {
