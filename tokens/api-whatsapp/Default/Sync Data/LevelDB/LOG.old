@@ -1,3 +1,2 @@
-2025/03/11-10:43:50.455 20b4 Reusing MANIFEST C:\Users\W E T\Documents\wandeson\JS\whatsapp-bot\tokens\api-whatsapp\Default\Sync Data\LevelDB/MANIFEST-000001
-2025/03/11-10:43:50.460 20b4 Recovering log #3
-2025/03/11-10:43:50.460 20b4 Reusing old log C:\Users\W E T\Documents\wandeson\JS\whatsapp-bot\tokens\api-whatsapp\Default\Sync Data\LevelDB/000003.log 
+2025/03/27-08:33:47.067 22c8 Creating DB C:\Users\W E T\Documents\wandeson\JS\whatsapp-bot\tokens\api-whatsapp\Default\Sync Data\LevelDB since it was missing.
+2025/03/27-08:33:47.091 22c8 Reusing MANIFEST C:\Users\W E T\Documents\wandeson\JS\whatsapp-bot\tokens\api-whatsapp\Default\Sync Data\LevelDB/MANIFEST-000001
