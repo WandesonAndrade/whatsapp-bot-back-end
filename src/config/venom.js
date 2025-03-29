@@ -4,7 +4,6 @@ let client = null;
 let qrCodeBase64 = null;
 let venomStarted = false;
 
-const CHROMIUM_PATH = "/usr/bin/chromium-browser";
 // Função para atualizar o status
 function setStatus(status) {
   currentStatus = status;
@@ -29,10 +28,14 @@ async function initializeVenom() {
         setStatus(status); // Atualiza o status conforme o Venom retorna
       },
       {
-        executablePath: CHROMIUM_PATH,
         logQR: false,
+        session: "session-name",
         headless: "new",
-        useChrome: false,
+        useChrome: false, // Impede que o Venom tente baixar o Chrome
+        disableSpins: true, // Remove os "loadings" que travam no Render
+        browserPath:
+          "/opt/render/.cache/puppeteer/chrome/linux-133.0.6943.126/chrome-linux64/chrome", // Caminho fixo do Chrome no Render
+
         waitForLoginTimeout: 60000, // Aguarda 60 segundos antes de desistir
         browserArgs: [
           "--no-sandbox",
