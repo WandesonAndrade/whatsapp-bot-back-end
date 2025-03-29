@@ -32,6 +32,7 @@ async function initializeVenom() {
         executablePath: CHROMIUM_PATH,
         logQR: false,
         headless: "new",
+        useChrome: false,
         waitForLoginTimeout: 60000, // Aguarda 60 segundos antes de desistir
         browserArgs: [
           "--no-sandbox",
