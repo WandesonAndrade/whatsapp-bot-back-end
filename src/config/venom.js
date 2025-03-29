@@ -1,4 +1,5 @@
 const venom = require("venom-bot");
+const puppeteer = require("puppeteer");
 
 let client = null;
 let qrCodeBase64 = null;
@@ -13,6 +14,18 @@ const getStatus = () => currentStatus;
 
 // Inicializa o Venom-Bot
 async function initializeVenom() {
+  const browser = await puppeteer.launch({
+    headless: "new",
+    executablePath:
+      "/opt/render/.cache/puppeteer/chrome/linux-133.0.6943.126/chrome-linux64/chrome", // Usa o Chrome já instalado no Render
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-accelerated-2d-canvas",
+      "--disable-gpu",
+    ],
+  });
   if (venomStarted) return;
   venomStarted = true;
 
@@ -30,9 +43,9 @@ async function initializeVenom() {
       {
         logQR: false,
         session: "session-name",
-        headless: "new",
+        browser: browser, // Passa o browser criado pelo Puppeteer
         useChrome: false, // Impede que o Venom tente baixar o Chrome
-        disableSpins: true, // Remove os "loadings" que travam no Render
+        disableSpins: true, // Remove animações desnecessárias no Render
         browserPath:
           "/opt/render/.cache/puppeteer/chrome/linux-133.0.6943.126/chrome-linux64/chrome", // Caminho fixo do Chrome no Render
 
